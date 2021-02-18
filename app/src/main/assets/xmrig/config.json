@@ -3,32 +3,16 @@
     "id": null,
     "worker-id": null
   },
-  "http": {
-    "enabled": false,
-    "host": "127.0.0.1",
-    "port": 0,
-    "access-token": null,
-    "restricted": true
-  },
   "autosave": false,
   "version": 1,
   "background": false,
   "colors": false,
-  "randomx": {
-    "init": -1,
-    "numa": false
-  },
-  "cpu": {
-    "enabled": true,
-    "huge-pages": true,
-    "hw-aes": null,
-    "priority": 3,
-    "asm": false,
-    "argon2-impl": null,
-    "*": $cpuconfig$
-  },
-  "donate-level": 0,
-  "donate-over-proxy": 0,
+  "cpu-affinity": null,
+  "cpu-priority": 3,
+  "donate-level": 1,
+  "low-power-mode": 2,
+  "threads": $threads$,
+  "av": 1,
   "log-file": null,
   "pools": [
     {

@@ -177,7 +177,7 @@ public class MiningService extends Service {
             return MiningService.this;
         }
     }
-
+    /*
     private static String createCpuConfig(int cores, int threads, int intensity) {
         String cpuConfig = "";
 
@@ -191,7 +191,7 @@ public class MiningService extends Service {
         }
 
         return "[" + cpuConfig + "]";
-    }
+    }*/
 
     static class MiningConfig {
         String username, pool, password, algo, assetExtension, cpuConfig, poolHost, poolPort;
@@ -216,7 +216,7 @@ public class MiningService extends Service {
         config.poolHost = pi.getPool();
         config.poolPort = pi.getPort();
 
-        config.cpuConfig = createCpuConfig(cores, threads, intensity);
+        //config.cpuConfig = createCpuConfig(cores, threads, intensity);
 
         return config;
     }

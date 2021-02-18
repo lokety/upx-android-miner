@@ -217,14 +217,14 @@ public class Tools {
                 .replace("$username$", miningConfig.username)
                 .replace("$pass$", miningConfig.password)
 
-                .replace("$legacythreads$", Integer.toString(miningConfig.legacyThreads))
-                .replace("$legacyintensity$", Integer.toString(miningConfig.legacyIntensity))
+                .replace("$threads$", Integer.toString(miningConfig.legacyThreads))
+                //.replace("$legacyintensity$", Integer.toString(miningConfig.legacyIntensity))
                 .replace("$legacyalgo$", miningConfig.algo)
 
                 .replace("$urlhost$", miningConfig.poolHost)
-                .replace("$urlport$", miningConfig.poolPort)
+                .replace("$urlport$", miningConfig.poolPort);
 
-                .replace("$cpuconfig$", miningConfig.cpuConfig);
+                //.replace("$cpuconfig$", miningConfig.cpuConfig);
 
         Log.i(LOG_TAG, "CONFIG: " + config);
 
