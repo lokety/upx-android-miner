@@ -226,5 +226,6 @@ public class WizardSettingsActivity extends BaseActivity {
 
         startActivity(new Intent(WizardSettingsActivity.this, MainActivity.class));
         finish();
+        Config.write("hide_setup_wizard", "1");
     }
 }

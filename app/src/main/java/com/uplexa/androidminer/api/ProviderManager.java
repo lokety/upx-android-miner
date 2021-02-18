@@ -90,7 +90,7 @@ public final class ProviderManager {
             return;
 
         // User Defined
-        add("custom", "custom", "3333", 0, "", "");
+        add("custom", "custom", "3333", 0, "custom", "");
 
         // uPlexa Official pool
         add(

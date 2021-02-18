@@ -72,8 +72,6 @@ public class WizardHomeActivity extends BaseActivity {
     public void onEnterAddress(View view) {
         startActivity(new Intent(WizardHomeActivity.this, WizardAddressActivity.class));
         finish();
-
-        Config.write("hide_setup_wizard", "1");
     }
 
     public void onCreateWallet(View view) {
