@@ -204,7 +204,7 @@ public class MiningService extends Service {
         config.username = address;
         config.cores = cores;
         config.threads = threads;
-        config.intensity = intensity;
+        //config.intensity = intensity;
         config.password = password;
         config.algo = Config.algo;
         config.assetExtension = Config.miner_upxrig;
@@ -450,6 +450,9 @@ public class MiningService extends Service {
                     tmpSpeed = split[5];
                     if (tmpSpeed.equals("n/a")) {
                         tmpSpeed = split[6];
+                        if (tmpSpeed.equals("n/a")) {
+                            tmpSpeed = "0";
+                        }
                     }
                 }
 

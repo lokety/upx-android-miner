@@ -1646,6 +1646,9 @@ public class MainActivity extends BaseActivity
 
         // Check if temperatures are now safe to resume mining
         if(isDeviceCooling()) {
+            if (cpuTemp.equals("n/a")) {
+              cpuTemp = 0;
+            }
             if (cpuTemp <= nSafeCPUTemp && batteryTemp <= nSafeBatteryTemp) {
                 enableCooling(false);
             }
