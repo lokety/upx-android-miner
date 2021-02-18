@@ -434,7 +434,7 @@
                     android:id="@+id/seekbarcputemperature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:max="5"
+                    android:max="9"
                     android:maxHeight="5dp"
                     android:min="1"
                     android:minHeight="5dp"

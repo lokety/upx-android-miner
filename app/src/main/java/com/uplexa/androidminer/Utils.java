@@ -41,7 +41,7 @@ import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 final class Utils {
     static public Integer INCREMENT = 5;
-    static public Integer MIN_CPU_TEMP = 55;
+    static public Integer MIN_CPU_TEMP = 40; // Changed from 55 to 40 as per rqst in #16
     static public  Integer MIN_BATTERY_TEMP = 30;
     static public  Integer MIN_COOLDOWN = 10;
 
