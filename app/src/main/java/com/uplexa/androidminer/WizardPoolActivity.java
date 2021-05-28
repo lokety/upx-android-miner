@@ -73,7 +73,7 @@ public class WizardPoolActivity extends BaseActivity {
         queue.add(stringRequest);
 
         // Miner.rocks
-        stringRequest = new StringRequest(Request.Method.GET, "https://api.uplexa.online/stats",
+        stringRequest = new StringRequest(Request.Method.GET, "https://api.uplexapool.com/stats",
                 response -> {
                     try {
                         Log.i(LOG_TAG, "response: " + response);

@@ -103,15 +103,15 @@ public final class ProviderManager {
                 "https://uplexa.com/o3.php?r="
         );
 
-        // uPlexa Online
+        // uPlexa Pool
         add(
-                "uPlexa Online (Official Pool)",
-                "us.uplexa.online",
+                "uPlexaPool.com (Official Pool)",
+                "mine.uplexapool.com",
                 "1111",
                 3, // CryptonoteNodeJS
-                "https://uplexa.online",
-                "209.126.0.179",
-                "https://api.uplexa.online"
+                "https://uplexapool.com",
+                "194.163.131.219",
+                "https://api.uplexapool.com"
         );
 
         // MiningOcean
