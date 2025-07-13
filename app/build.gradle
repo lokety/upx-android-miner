@@ -11,6 +11,10 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     defaultConfig {
         applicationId "com.uplexa.androidminer"
         minSdkVersion 21
@@ -26,7 +30,6 @@ android {
         release {
             minifyEnabled false // Disable it for now, problem while fetching Json data for Pool API
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 }
