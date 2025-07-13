@@ -105,6 +105,7 @@ import com.android.volley.toolbox.Volley;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.github.anastr.speedviewlib.components.Section;
+import com.github.anastr.speedviewlib.components.Style;
 import com.github.anastr.speedviewlib.components.indicators.LineIndicator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -303,7 +304,7 @@ public class MainActivity extends BaseActivity
         meterCoresGap.invalidate();
 
         meterCores = findViewById(R.id.meter_cores);
-        meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Section.Style.SQUARE);
+        meterCores.makeSections(1, getResources().getColor(R.color.c_yellow), Style.ROUND);
         meterCores.setMaxSpeed(nNbMaxCores);
         meterCores.speedTo(nCores, 0);
 
@@ -311,7 +312,7 @@ public class MainActivity extends BaseActivity
 
         // Hashrate
         meterHashrate = findViewById(R.id.meter_hashrate);
-        meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Section.Style.SQUARE);
+        meterHashrate.makeSections(1, getResources().getColor(R.color.c_blue), Style.ROUND);
 
         LineIndicator indicator_speed = new LineIndicator(contextOfApplication, 0.15f);
         indicator_speed.setColor(getResources().getColor(R.color.c_white));
@@ -320,7 +321,7 @@ public class MainActivity extends BaseActivity
 
         // Average Meter
         meterHashrate_avg = findViewById(R.id.meter_hashrate_avg);
-        meterHashrate_avg.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
+        meterHashrate_avg.makeSections(1, getResources().getColor(android.R.color.transparent), Style.ROUND);
 
         SimpleTriangleIndicator indicator_avg = new SimpleTriangleIndicator(contextOfApplication);
         indicator_avg.setWidth(40.0f);
@@ -329,7 +330,7 @@ public class MainActivity extends BaseActivity
 
         // Max Meter
         meterHashrate_max = findViewById(R.id.meter_hashrate_max);
-        meterHashrate_max.makeSections(1, getResources().getColor(android.R.color.transparent), Section.Style.SQUARE);
+        meterHashrate_max.makeSections(1, getResources().getColor(android.R.color.transparent), Style.ROUND);
 
         SimpleTriangleIndicator indicator_max = new SimpleTriangleIndicator(contextOfApplication);
         indicator_max.setWidth(40.0f);
@@ -744,74 +745,59 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_home: { //Main view
-                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    if (fragment != null) {
-                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    }
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_home) { //Main view
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                if (fragment != null) {
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 }
-
-                llMain.setVisibility(View.VISIBLE);
-                llLog.setVisibility(View.GONE);
-
-                updateStatsListener();
-                updateUI();
-
-                break;
             }
-            case R.id.menu_log: {
-                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    if (fragment != null) {
-                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    }
+
+            llMain.setVisibility(View.VISIBLE);
+            llLog.setVisibility(View.GONE);
+
+            updateStatsListener();
+            updateUI();
+        } else if (itemId == R.id.menu_log) {
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                if (fragment != null) {
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 }
-
-                llMain.setVisibility(View.GONE);
-                llLog.setVisibility(View.VISIBLE);
-
-                updateStatsListener();
-                updateUI();
-
-                break;
             }
-            case R.id.menu_stats: {
-                StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
-                if (fragment_stats == null) {
-                    fragment_stats = new StatsFragment();
-                }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
+            llMain.setVisibility(View.GONE);
+            llLog.setVisibility(View.VISIBLE);
 
-                llMain.setVisibility(View.VISIBLE);
-                llLog.setVisibility(View.GONE);
-
-                break;
+            updateStatsListener();
+            updateUI();
+        } else if (itemId == R.id.menu_stats) {
+            StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
+            if (fragment_stats == null) {
+                fragment_stats = new StatsFragment();
             }
-            case R.id.menu_settings: {
-                SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
-                if (settings_fragment == null) {
-                    settings_fragment = new SettingsFragment();
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment, "settings_fragment").commit();
 
-                llMain.setVisibility(View.VISIBLE);
-                llLog.setVisibility(View.GONE);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
 
-                break;
+            llMain.setVisibility(View.VISIBLE);
+            llLog.setVisibility(View.GONE);
+        } else if (itemId == R.id.menu_settings) {
+            SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+            if (settings_fragment == null) {
+                settings_fragment = new SettingsFragment();
             }
-            case R.id.menu_help: {
-                AboutFragment about_fragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag("about_fragment");
-                if (about_fragment == null) {
-                    about_fragment = new AboutFragment();
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about_fragment, "about_fragment").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment, "settings_fragment").commit();
 
-                llMain.setVisibility(View.VISIBLE);
-                llLog.setVisibility(View.GONE);
-
-                break;
+            llMain.setVisibility(View.VISIBLE);
+            llLog.setVisibility(View.GONE);
+        } else if (itemId == R.id.menu_help) {
+            AboutFragment about_fragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag("about_fragment");
+            if (about_fragment == null) {
+                about_fragment = new AboutFragment();
             }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about_fragment, "about_fragment").commit();
+
+            llMain.setVisibility(View.VISIBLE);
+            llLog.setVisibility(View.GONE);
         }
 
         updateUI();
@@ -1646,7 +1632,7 @@ public class MainActivity extends BaseActivity
 
         // Check if temperatures are now safe to resume mining
         if(isDeviceCooling()) {
-            if (cpuTemp.equals("n/a")) {
+            if (cpuTemp == 0.0f) {
               cpuTemp = 0;
             }
             if (cpuTemp <= nSafeCPUTemp && batteryTemp <= nSafeBatteryTemp) {
