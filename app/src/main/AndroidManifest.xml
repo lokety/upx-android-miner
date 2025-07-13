@@ -35,7 +35,8 @@
         </activity>
 
         <activity
-            android:name="io.uplexaproject.androidminer.SplashActivity">
+            android:name="io.uplexaproject.androidminer.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -78,7 +79,8 @@
 
         <receiver
             android:name="io.uplexaproject.androidminer.NotificationsReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="OPEN_ACTION"/>
                 <action android:name="STOP_ACTION"/>
