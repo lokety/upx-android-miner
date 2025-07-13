@@ -34,8 +34,7 @@
 			android:paddingTop="15dp"
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
-			android:paddingBottom="15dp"
-			android:onClick="onClickuPlexa">
+			android:paddingBottom="15dp">
 
 			<TextView
 				android:layout_width="40dp"
@@ -119,8 +118,7 @@
 			android:paddingTop="15dp"
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
-			android:paddingBottom="15dp"
-			android:onClick="onClickMR">
+			android:paddingBottom="15dp">
 
 			<TextView
 				android:layout_width="40dp"
@@ -205,8 +203,7 @@
 			android:paddingTop="15dp"
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
-			android:paddingBottom="15dp"
-			android:onClick="onClickHM">
+			android:paddingBottom="15dp">
 
 			<TextView
 				android:layout_width="40dp"
@@ -291,8 +288,7 @@
 			android:paddingTop="15dp"
 			android:paddingLeft="15dp"
 			android:paddingRight="15dp"
-			android:paddingBottom="15dp"
-			android:onClick="onClickGNTL">
+			android:paddingBottom="15dp">
 
 			<TextView
 				android:layout_width="40dp"
@@ -375,6 +371,7 @@
 		android:layout_alignParentBottom="true">
 
 		<Button
+			android:id="@+id/btnNext"
 			android:layout_width="match_parent"
 			android:layout_height="55dp"
 			android:layout_marginTop="15dp"
@@ -382,7 +379,6 @@
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
 			android:backgroundTint="@color/bg_blue"
-			android:onClick="onNext"
 			android:text="@string/next"
 			android:textSize="14sp"
 			android:textAllCaps="false"

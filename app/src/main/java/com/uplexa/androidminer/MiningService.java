@@ -29,7 +29,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.app.NotificationManager;
 import android.app.Service;
@@ -69,8 +69,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import io.uplexaproject.androidminer.api.PoolItem;
-import io.uplexaproject.androidminer.api.ProviderManager;
+import com.uplexa.androidminer.api.PoolItem;
+import com.uplexa.androidminer.api.ProviderManager;
 
 import static android.os.PowerManager.*;
 

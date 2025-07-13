@@ -11,7 +11,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer.api.providers;
+package com.uplexa.androidminer.api.providers;
 
 import android.util.Log;
 
@@ -22,15 +22,15 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.Date;
 
-import io.uplexaproject.androidminer.api.ProviderData;
-import io.uplexaproject.androidminer.api.ProviderAbstract;
-import io.uplexaproject.androidminer.api.PoolItem;
-import io.uplexaproject.androidminer.network.Json;
+import com.uplexa.androidminer.api.ProviderData;
+import com.uplexa.androidminer.api.ProviderAbstract;
+import com.uplexa.androidminer.api.PoolItem;
+import com.uplexa.androidminer.network.Json;
 
-import static io.uplexaproject.androidminer.Tools.getReadableHashRateString;
-import static io.uplexaproject.androidminer.Tools.parseCurrency;
-import static io.uplexaproject.androidminer.Tools.parseCurrencyFloat;
-import static io.uplexaproject.androidminer.Tools.tryParseLong;
+import static com.uplexa.androidminer.Tools.getReadableHashRateString;
+import static com.uplexa.androidminer.Tools.parseCurrency;
+import static com.uplexa.androidminer.Tools.parseCurrencyFloat;
+import static com.uplexa.androidminer.Tools.tryParseLong;
 
 public final class NodejsPool extends ProviderAbstract {
 

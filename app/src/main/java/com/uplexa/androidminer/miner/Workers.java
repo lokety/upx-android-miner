@@ -11,7 +11,7 @@
 // been used.
 
 
-package io.uplexaproject.androidminer.miner;
+package com.uplexa.androidminer.miner;
 
 import android.os.AsyncTask;
 

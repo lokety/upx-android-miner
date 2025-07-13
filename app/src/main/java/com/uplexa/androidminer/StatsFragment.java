@@ -10,7 +10,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.content.Intent;
 import android.graphics.Paint;
@@ -22,14 +22,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import io.uplexaproject.androidminer.api.ProviderData;
-import io.uplexaproject.androidminer.api.PoolItem;
-import io.uplexaproject.androidminer.api.IProviderListener;
-import io.uplexaproject.androidminer.api.ProviderManager;
+import com.uplexa.androidminer.api.ProviderData;
+import com.uplexa.androidminer.api.PoolItem;
+import com.uplexa.androidminer.api.IProviderListener;
+import com.uplexa.androidminer.api.ProviderManager;
 
 public class StatsFragment extends Fragment {
 
@@ -38,9 +38,10 @@ public class StatsFragment extends Fragment {
     private TextView tvViewStatsOnline;
 
     protected IProviderListener statsListener;
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
 
         statsListener = new IProviderListener() {
@@ -59,6 +60,14 @@ public class StatsFragment extends Fragment {
         tvViewStatsOnline.setEnabled(false);
         tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
 
+        // Set up the click listener to trigger onShowCores (sendInput("h"))
+        tvViewStatsOnline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((com.uplexa.androidminer.MainActivity) requireActivity()).sendInput("h");
+            }
+        });
+
         ProviderManager.request.setListener(statsListener).start();
         ProviderManager.afterSave();
         updateFields(ProviderManager.data, view);
@@ -67,10 +76,10 @@ public class StatsFragment extends Fragment {
     }
 
     private void updateFields(ProviderData d, View view) {
-        if(view == null || view.getContext() == null)
+        if (view == null || view.getContext() == null)
             return;
 
-        if(d.isNew) {
+        if (d.isNew) {
             enableOnlineStats(false);
             return;
         }
@@ -78,13 +87,11 @@ public class StatsFragment extends Fragment {
         PoolItem pm = ProviderManager.getSelectedPool();
 
         // Network
-
         TextView tvNetworkHashrate = view.findViewById(R.id.hashratenetwork);
         tvNetworkHashrate.setText(d.network.hashrate.isEmpty() ? "n/a" : d.network.hashrate);
 
         TextView tvNetworkDifficulty = view.findViewById(R.id.difficultynetwork);
         tvNetworkDifficulty.setText(d.network.difficulty.isEmpty() ? "n/a" : d.network.difficulty);
-
 
         TextView tvNetworkBlocks = view.findViewById(R.id.lastblocknetwork);
         tvNetworkBlocks.setText(d.network.lastBlockTime.isEmpty() ? "n/a" : d.network.lastBlockTime);
@@ -96,7 +103,6 @@ public class StatsFragment extends Fragment {
         tvNetworkRewards.setText(d.network.lastRewardAmount.isEmpty() ? "n/a" : d.network.lastRewardAmount);
 
         // Pool
-
         TextView tvPoolURL = view.findViewById(R.id.poolurl);
         tvPoolURL.setText(pm.getPool() == null ? "" : pm.getPool());
 
@@ -105,23 +111,19 @@ public class StatsFragment extends Fragment {
 
         TextView tvPoolMiners = view.findViewById(R.id.miners);
         tvPoolMiners.setText(d.pool.miners.isEmpty() ? "n/a" : d.pool.miners);
-        /*
-        TextView tvPoolBlocks = view.findViewById(R.id.lastblockpool);
-        tvPoolBlocks.setText(d.pool.lastBlockTime.isEmpty() ? "n/a" : d.pool.lastBlockTime);
-        */
+
         TextView tvPoolLastBlock = view.findViewById(R.id.blockspool);
         tvPoolLastBlock.setText(d.pool.blocks.isEmpty() ? "n/a" : d.pool.blocks);
 
         // Address
-
-        String wallet = Config.read("address");
+        String wallet = com.uplexa.androidminer.Config.read("address");
         String prettyaddress = wallet.substring(0, 7) + "..." + wallet.substring(wallet.length() - 7);
 
         TextView tvWalletAddress = view.findViewById(R.id.walletaddress);
         tvWalletAddress.setText(prettyaddress);
 
         String sHashrate = d.miner.hashrate;
-        if(sHashrate != null) {
+        if (sHashrate != null) {
             sHashrate = sHashrate.replace("H", "").trim();
             TextView tvAddressHashrate = view.findViewById(R.id.hashrateminer);
             tvAddressHashrate.setText(sHashrate);
@@ -142,16 +144,6 @@ public class StatsFragment extends Fragment {
         }
 
         enableOnlineStats(true);
-
-        String statsUrlWallet = pm.getStatsURL() + "?wallet=" + wallet;
-        tvViewStatsOnline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse(statsUrlWallet);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
     }
 
     private void enableOnlineStats(boolean enable) {
@@ -159,32 +151,31 @@ public class StatsFragment extends Fragment {
 
         if (enable) {
             tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_blue));
-        }
-        else {
+        } else {
             tvViewStatsOnline.setTextColor(getResources().getColor(R.color.c_grey));
         }
     }
 
     public boolean checkValidState() {
-        if(getContext() == null)
+        if (getContext() == null)
             return false;
 
-        if(Config.read("address").equals("")) {
-            Toast.makeText(getContext(),"Wallet address is empty.", Toast.LENGTH_LONG).show();
+        if (com.uplexa.androidminer.Config.read("address").equals("")) {
+            Toast.makeText(getContext(), "Wallet address is empty.", Toast.LENGTH_LONG).show();
             enableOnlineStats(false);
             return false;
         }
 
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        if (!Config.read("init").equals("1") || pi == null) {
-            Toast.makeText(getContext(),"Start mining to view statistics.", Toast.LENGTH_LONG).show();
+        if (!com.uplexa.androidminer.Config.read("init").equals("1") || pi == null) {
+            Toast.makeText(getContext(), "Start mining to view statistics.", Toast.LENGTH_LONG).show();
             enableOnlineStats(false);
             return false;
         }
 
         if (pi.getPoolType() == 0) {
-            Toast.makeText(getContext(),"Statistics are not available for custom pools.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Statistics are not available for custom pools.", Toast.LENGTH_LONG).show();
             enableOnlineStats(false);
             return false;
         }

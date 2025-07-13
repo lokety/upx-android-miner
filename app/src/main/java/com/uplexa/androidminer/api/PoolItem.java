@@ -11,10 +11,10 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer.api;
+package com.uplexa.androidminer.api;
 
-import io.uplexaproject.androidminer.Config;
-import io.uplexaproject.androidminer.api.providers.*;
+import com.uplexa.androidminer.Config;
+import com.uplexa.androidminer.api.providers.*;
 
 public class PoolItem {
 
@@ -186,8 +186,8 @@ public class PoolItem {
         }
     }
 
-    public ProviderAbstract getInterface() {
-        ProviderAbstract mPoolInterface;
+    public com.uplexa.androidminer.api.ProviderAbstract getInterface() {
+        com.uplexa.androidminer.api.ProviderAbstract mPoolInterface;
         switch (this.mPoolType) {
             case 1:
                 mPoolInterface = new NodejsPool(this);

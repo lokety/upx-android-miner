@@ -44,7 +44,6 @@
                 android:selectAllOnFocus="false"
                 android:linksClickable="true"
                 android:autoLink="all"
-                android:onClick="onShowCores"
                 android:textColor="@color/c_blue"/>
 
         </LinearLayout>

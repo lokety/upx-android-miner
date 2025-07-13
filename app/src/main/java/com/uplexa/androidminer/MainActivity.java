@@ -16,7 +16,7 @@
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
- // Copyright (c) 2020, uPlexa
+// Copyright (c) 2020, uPlexa
 // Copyright (c) 2019, Mine2Gether.com
 // Copyright (c) 2021 Scala
 // Please see the included LICENSE file for more information.
@@ -29,7 +29,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -108,20 +108,21 @@ import com.github.anastr.speedviewlib.components.Section;
 import com.github.anastr.speedviewlib.components.Style;
 import com.github.anastr.speedviewlib.components.indicators.LineIndicator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.uplexa.androidminer.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.uplexaproject.androidminer.api.IProviderListener;
-import io.uplexaproject.androidminer.api.PoolItem;
-import io.uplexaproject.androidminer.api.ProviderData;
-import io.uplexaproject.androidminer.api.ProviderManager;
-import io.uplexaproject.androidminer.controls.SimpleTriangleIndicator;
+import com.uplexa.androidminer.api.IProviderListener;
+import com.uplexa.androidminer.api.PoolItem;
+import com.uplexa.androidminer.api.ProviderData;
+import com.uplexa.androidminer.api.ProviderManager;
+import com.uplexa.androidminer.controls.SimpleTriangleIndicator;
 
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends com.uplexa.androidminer.BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener
 {
     private static final String LOG_TAG = "MainActivity";
@@ -142,7 +143,7 @@ public class MainActivity extends BaseActivity
 
     private boolean validArchitecture = true;
 
-    private MiningService.MiningServiceBinder binder;
+    private com.uplexa.androidminer.MiningService.MiningServiceBinder binder;
     private boolean bPayoutDataReceived = false;
 
     private boolean bIgnoreCPUCoresEvent = false;
@@ -239,7 +240,7 @@ public class MainActivity extends BaseActivity
         }
 
         if(!isServerConnectionBound) {
-            Intent intent = new Intent(this, MiningService.class);
+            Intent intent = new Intent(this, com.uplexa.androidminer.MiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
             startService(intent);
             isServerConnectionBound = true;
@@ -252,15 +253,15 @@ public class MainActivity extends BaseActivity
         navigationView.setOnNavigationItemSelectedListener(this);
 
         // Open Settings the first time the app is launched
-        if (Config.read("address").equals("")) {
+        if (com.uplexa.androidminer.Config.read("address").equals("")) {
             navigationView.getMenu().getItem(2).setChecked(true);
 
-            SettingsFragment fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+            com.uplexa.androidminer.SettingsFragment fragment = (com.uplexa.androidminer.SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
             if(fragment != null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment,"settings_fragment").commit();
             }
             else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment(),"settings_fragment").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new com.uplexa.androidminer.SettingsFragment(),"settings_fragment").commit();
             }
         }
 
@@ -288,7 +289,7 @@ public class MainActivity extends BaseActivity
         // CPU Cores
 
         nNbMaxCores = Runtime.getRuntime().availableProcessors();
-        nCores = Integer.parseInt(Config.read("cores"));
+        nCores = Integer.parseInt(com.uplexa.androidminer.Config.read("cores"));
 
         // Create a dummy meter to add "gaps" to the Cores meter, to separate every core value
         TubeSpeedometer meterCoresGap = findViewById(R.id.meter_cores_gap);
@@ -384,7 +385,7 @@ public class MainActivity extends BaseActivity
                         @Override
                         public void onClick(View v) {
                             nCores = sbCores.getProgress();
-                            Config.write("cores", Integer.toString(nCores));
+                            com.uplexa.androidminer.Config.write("cores", Integer.toString(nCores));
 
                             bIsRestartEvent = true;
 
@@ -427,14 +428,14 @@ public class MainActivity extends BaseActivity
                 }
                 else {
                     nCores = sbCores.getProgress();
-                    Config.write("cores", Integer.toString(nCores));
+                    com.uplexa.androidminer.Config.write("cores", Integer.toString(nCores));
                     updateCores();
                 }
             }
         });
 
-        if (!Arrays.asList(Config.SUPPORTED_ARCHITECTURES).contains(Tools.getABI())) {
-            String sArchError = "Your architecture is not supported: " + Tools.getABI();
+        if (!Arrays.asList(com.uplexa.androidminer.Config.SUPPORTED_ARCHITECTURES).contains(com.uplexa.androidminer.Tools.getABI())) {
+            String sArchError = "Your architecture is not supported: " + com.uplexa.androidminer.Tools.getABI();
             appendLogOutputFormattedText(sArchError);
             refreshLogOutputView();
             setStatusText(sArchError);
@@ -451,6 +452,17 @@ public class MainActivity extends BaseActivity
                 shareIt();
             }
         });
+
+        // Set up click listener for showCores ImageView
+        ImageView showCoresImageView = findViewById(R.id.showCores);
+        if (showCoresImageView != null) {
+            showCoresImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onShowCores(v); // Reuse the existing onShowCores method
+                }
+            });
+        }
 
         ProviderManager.generate();
 
@@ -553,12 +565,12 @@ public class MainActivity extends BaseActivity
             tvBalance.setText(sBalance);
 
             float fMinPayout;
-            if(Config.read("mininggoal").equals(""))
-                fMinPayout = Utils.convertStringToFloat(d.pool.minPayout);
+            if(com.uplexa.androidminer.Config.read("mininggoal").equals(""))
+                fMinPayout = com.uplexa.androidminer.Utils.convertStringToFloat(d.pool.minPayout);
             else
-                fMinPayout = Utils.convertStringToFloat(Config.read("mininggoal").trim());
+                fMinPayout = com.uplexa.androidminer.Utils.convertStringToFloat(com.uplexa.androidminer.Config.read("mininggoal").trim());
 
-            float fBalance = Utils.convertStringToFloat(sBalance);
+            float fBalance = com.uplexa.androidminer.Utils.convertStringToFloat(sBalance);
             if (fBalance > 0 && fMinPayout > 0) {
                 pbPayout.setProgress(Math.round(fBalance));
                 pbPayout.setMax(Math.round(fMinPayout));
@@ -684,8 +696,8 @@ public class MainActivity extends BaseActivity
     private boolean isValidConfig() {
         PoolItem pi = ProviderManager.getSelectedPool();
 
-        return  Config.read("init").equals("1") &&
-                !Config.read("address").equals("") &&
+        return  com.uplexa.androidminer.Config.read("init").equals("1") &&
+                !com.uplexa.androidminer.Config.read("address").equals("") &&
                 pi != null &&
                 !pi.getPool().equals("") &&
                 !pi.getPort().equals("");
@@ -696,7 +708,7 @@ public class MainActivity extends BaseActivity
 
         // Worker Name
         TextView tvWorkerName = findViewById(R.id.workername);
-        String sWorkerName = Config.read("workername");
+        String sWorkerName = com.uplexa.androidminer.Config.read("workername");
         if(!sWorkerName.equals(""))
             tvWorkerName.setText(sWorkerName);
 
@@ -771,9 +783,9 @@ public class MainActivity extends BaseActivity
             updateStatsListener();
             updateUI();
         } else if (itemId == R.id.menu_stats) {
-            StatsFragment fragment_stats = (StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
+            com.uplexa.androidminer.StatsFragment fragment_stats = (com.uplexa.androidminer.StatsFragment) getSupportFragmentManager().findFragmentByTag("fragment_stats");
             if (fragment_stats == null) {
-                fragment_stats = new StatsFragment();
+                fragment_stats = new com.uplexa.androidminer.StatsFragment();
             }
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_stats, "fragment_stats").commit();
@@ -781,18 +793,18 @@ public class MainActivity extends BaseActivity
             llMain.setVisibility(View.VISIBLE);
             llLog.setVisibility(View.GONE);
         } else if (itemId == R.id.menu_settings) {
-            SettingsFragment settings_fragment = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+            com.uplexa.androidminer.SettingsFragment settings_fragment = (com.uplexa.androidminer.SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
             if (settings_fragment == null) {
-                settings_fragment = new SettingsFragment();
+                settings_fragment = new com.uplexa.androidminer.SettingsFragment();
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, settings_fragment, "settings_fragment").commit();
 
             llMain.setVisibility(View.VISIBLE);
             llLog.setVisibility(View.GONE);
         } else if (itemId == R.id.menu_help) {
-            AboutFragment about_fragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag("about_fragment");
+            com.uplexa.androidminer.AboutFragment about_fragment = (com.uplexa.androidminer.AboutFragment) getSupportFragmentManager().findFragmentByTag("about_fragment");
             if (about_fragment == null) {
-                about_fragment = new AboutFragment();
+                about_fragment = new com.uplexa.androidminer.AboutFragment();
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, about_fragment, "about_fragment").commit();
 
@@ -821,55 +833,55 @@ public class MainActivity extends BaseActivity
     }
 
     public void loadSettings() {
-        if (!Config.read("init").equals("1"))
+        if (!com.uplexa.androidminer.Config.read("init").equals("1"))
             return;
 
-        nThreads = Integer.parseInt(Config.read("threads"));
+        nThreads = Integer.parseInt(com.uplexa.androidminer.Config.read("threads"));
 
         // Load AMAYC Settings
-        bDisableTemperatureControl = Config.read("disableamayc").equals("1");
-        nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp").trim());
-        nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp").trim());
-        int nCooldownThreshold = Integer.parseInt(Config.read("cooldownthreshold").trim());
+        bDisableTemperatureControl = com.uplexa.androidminer.Config.read("disableamayc").equals("1");
+        nMaxCPUTemp = Integer.parseInt(com.uplexa.androidminer.Config.read("maxcputemp").trim());
+        nMaxBatteryTemp = Integer.parseInt(com.uplexa.androidminer.Config.read("maxbatterytemp").trim());
+        int nCooldownThreshold = Integer.parseInt(com.uplexa.androidminer.Config.read("cooldownthreshold").trim());
 
         nSafeCPUTemp = nMaxCPUTemp - Math.round((float)nMaxCPUTemp * (float)nCooldownThreshold / 100.0f);
         nSafeBatteryTemp = nMaxBatteryTemp - Math.round((float)nMaxBatteryTemp * (float)nCooldownThreshold / 100.0f);
 
-        nCores = Integer.parseInt(Config.read("cores"));
-        nIntensity = Integer.parseInt(Config.read("intensity"));
+        nCores = Integer.parseInt(com.uplexa.androidminer.Config.read("cores"));
+        nIntensity = Integer.parseInt(com.uplexa.androidminer.Config.read("intensity"));
     }
 
     private void startMining() {
         if (binder == null) return;
 
-        if (!Config.read("init").equals("1")) {
+        if (!com.uplexa.androidminer.Config.read("init").equals("1")) {
             setStatusText("Save settings before mining.");
             return;
         }
 
-        String password = Config.read("workername");
-        String address = Config.read("address");
+        String password = com.uplexa.androidminer.Config.read("workername");
+        String address = com.uplexa.androidminer.Config.read("address");
 
-        if (!Utils.verifyAddress(address)) {
+        if (!com.uplexa.androidminer.Utils.verifyAddress(address)) {
             setStatusText("Invalid wallet address.");
             return;
         }
 
-        if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
+        if (com.uplexa.androidminer.Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
             askToForceMining();
             return;
         }
 
         bForceMiningOnPause = false;
 
-        String username = address + Config.read("usernameparameters");
+        String username = address + com.uplexa.androidminer.Config.read("usernameparameters");
 
         resetOptions();
 
         loadSettings();
 
-        MiningService s = binder.getService();
-        MiningService.MiningConfig cfg = s.newConfig(
+        com.uplexa.androidminer.MiningService s = binder.getService();
+        com.uplexa.androidminer.MiningService.MiningConfig cfg = s.newConfig(
                 username,
                 password,
                 nCores,
@@ -961,13 +973,13 @@ public class MainActivity extends BaseActivity
         }
 
         if(!isServerConnectionBound) {
-            Intent intent = new Intent(this, MiningService.class);
+            Intent intent = new Intent(this, com.uplexa.androidminer.MiningService.class);
             bindService(intent, serverConnection, BIND_AUTO_CREATE);
             startService(intent);
             isServerConnectionBound = true;
         }
 
-        SettingsFragment frag = (SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
+        com.uplexa.androidminer.SettingsFragment frag = (com.uplexa.androidminer.SettingsFragment) getSupportFragmentManager().findFragmentByTag("settings_fragment");
         if(frag != null) {
             frag.updateAddress();
         }
@@ -1074,7 +1086,7 @@ public class MainActivity extends BaseActivity
                 stopTimerStatusHashrate();
             }
 
-            if (Config.read("keepscreenonwhenmining").equals("1")) {
+            if (com.uplexa.androidminer.Config.read("keepscreenonwhenmining").equals("1")) {
                 View v = findViewById(R.id.main_navigation);
                 v.setKeepScreenOn(true);
             }
@@ -1497,7 +1509,7 @@ public class MainActivity extends BaseActivity
     private void appendLogOutputText(String line) {
         boolean refresh = false;
         if(binder != null){
-            if (tvLog.getText().length() > Config.logMaxLength ){
+            if (tvLog.getText().length() > com.uplexa.androidminer.Config.logMaxLength ){
                 String outputLog = binder.getService().getOutput();
                 tvLog.setText(formatLogOutputText(outputLog));
                 refresh = true;
@@ -1518,12 +1530,12 @@ public class MainActivity extends BaseActivity
     private ServiceConnection serverConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            binder = (MiningService.MiningServiceBinder) iBinder;
+            binder = (com.uplexa.androidminer.MiningService.MiningServiceBinder) iBinder;
             if (validArchitecture) {
                 btnStart.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         if (isDevicePaused()) {
-                            if (Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
+                            if (com.uplexa.androidminer.Config.read("pauseonbattery").equals("1") && !isCharging && !bForceMiningOnPause) {
                                 askToForceMining();
                                 return;
                             }
@@ -1542,7 +1554,7 @@ public class MainActivity extends BaseActivity
                 updateMiningButtonState();
                 //setMiningButtonState(binder.getService().getMiningServiceState());
 
-                binder.getService().setMiningServiceStateListener(new MiningService.MiningServiceStateListener() {
+                binder.getService().setMiningServiceStateListener(new com.uplexa.androidminer.MiningService.MiningServiceStateListener() {
                     @Override
                     public void onStateChange(Boolean state) {
                         Log.i(LOG_TAG, "onMiningStateChange: " + state);
@@ -1623,7 +1635,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateTemperatures() {
-        float cpuTemp = Tools.getCurrentCPUTemperature();
+        float cpuTemp = com.uplexa.androidminer.Tools.getCurrentCPUTemperature();
 
         updateTemperaturesText(cpuTemp);
 
@@ -1633,7 +1645,7 @@ public class MainActivity extends BaseActivity
         // Check if temperatures are now safe to resume mining
         if(isDeviceCooling()) {
             if (cpuTemp == 0.0f) {
-              cpuTemp = 0;
+                cpuTemp = 0;
             }
             if (cpuTemp <= nSafeCPUTemp && batteryTemp <= nSafeBatteryTemp) {
                 enableCooling(false);
@@ -1761,7 +1773,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void appendLogOutputFormattedText(String text) {
-        appendLogOutputText("[" + Utils.getDateTime() + "] " + text);
+        appendLogOutputText("[" + com.uplexa.androidminer.Utils.getDateTime() + "] " + text);
     }
 
     private void enableCooling(boolean enable) {
@@ -1773,7 +1785,7 @@ public class MainActivity extends BaseActivity
             appendLogOutputFormattedText(getResources().getString(R.string.maxtemperaturereached));
         }
         else {
-            if (Config.read("pauseonbattery").equals("1") && !isCharging) {
+            if (com.uplexa.androidminer.Config.read("pauseonbattery").equals("1") && !isCharging) {
                 setStatusText(getResources().getString(R.string.pauseonmining));
                 return;
             }
@@ -1830,7 +1842,7 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void sendInput(String s) {
+    public void sendInput(String s) {
         if (s.equals("p")) {
             pauseMiner();
         }
@@ -1852,41 +1864,50 @@ public class MainActivity extends BaseActivity
     public static final String OPEN_ACTION = "OPEN_ACTION";
     public static final String STOP_ACTION = "STOP_ACTION";
 
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1001;
+
     private void createNotificationManager() {
         String CHANNEL_ID = "MINING_STATUS";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, getResources().getString(R.string.miningstatus), NotificationManager.IMPORTANCE_LOW);
             notificationManager = getSystemService(NotificationManager.class);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
+        } else {
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
-        else
-            notificationManager =  (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationBuilder = new NotificationCompat.Builder(contextOfApplication, CHANNEL_ID);
     }
 
     private void showNotification() {
-        if(notificationManager == null)
+        if (notificationManager == null) {
             createNotificationManager();
+        }
 
-        NotificationsReceiver.activity = this;
+        com.uplexa.androidminer.NotificationsReceiver.activity = this;
+
+        // Check if the app has POST_NOTIFICATIONS permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted, request it
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
+                return; // Exit until permission is granted
+            }
+        }
 
         // Open intent
         Intent openIntent = new Intent(this, MainActivity.class);
         openIntent.setAction(OPEN_ACTION);
-        PendingIntent pendingIntentOpen = PendingIntent.getActivity(contextOfApplication, 1, openIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentOpen = PendingIntent.getActivity(contextOfApplication, 1, openIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // Stop intent
-        Intent stopIntent = new Intent(this, NotificationsReceiver.class);
+        Intent stopIntent = new Intent(this, com.uplexa.androidminer.NotificationsReceiver.class);
         stopIntent.setAction(STOP_ACTION);
-        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(contextOfApplication, 1, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         notificationBuilder.setContentTitle(getResources().getString(R.string.devicemining));
         notificationBuilder.setContentIntent(pendingIntentOpen);
-        notificationBuilder.addAction(android.R.drawable.ic_menu_view,"Open", pendingIntentOpen);
-        notificationBuilder.addAction(android.R.drawable.ic_lock_power_off,"Stop", pendingIntentStop);
+        notificationBuilder.addAction(android.R.drawable.ic_menu_view, "Open", pendingIntentOpen);
+        notificationBuilder.addAction(android.R.drawable.ic_lock_power_off, "Stop", pendingIntentStop);
         notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round));
         notificationBuilder.setSmallIcon(R.drawable.ic_notification);
         notificationBuilder.setOngoing(true);
@@ -1977,7 +1998,7 @@ public class MainActivity extends BaseActivity
 
             setStatusText((isCharging ? "Device Charging" : "Device on Battery"));
 
-            if (Config.read("pauseonbattery").equals("0")) {
+            if (com.uplexa.androidminer.Config.read("pauseonbattery").equals("0")) {
                 clearMinerLog = true;
             } else {
                 boolean state = false;
@@ -1993,4 +2014,18 @@ public class MainActivity extends BaseActivity
             }
         }
     };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, show the notification
+                showNotification();
+            } else {
+                // Permission denied, inform the user
+                Toast.makeText(this, "Notification permission denied. Notifications will not be displayed.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

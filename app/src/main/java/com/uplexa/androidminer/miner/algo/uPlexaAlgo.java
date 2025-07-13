@@ -10,7 +10,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer.miner.algo;
+package com.uplexa.androidminer.miner.algo;
 
 public class uPlexaAlgo extends AlgoAbstract {
 }

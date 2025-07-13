@@ -10,19 +10,19 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer.api;
+package com.uplexa.androidminer.api;
 
 import android.os.AsyncTask;
 import java.util.Timer;
 
-import io.uplexaproject.androidminer.Config;
+import com.uplexa.androidminer.Config;
 
 public abstract class ProviderAbstract extends AsyncTask<Void, Void, Void> {
 
     protected String LOG_TAG = "MiningSvc";
 
     final public ProviderData getBlockData() {
-        return ProviderManager.data;
+        return com.uplexa.androidminer.api.ProviderManager.data;
     }
 
     public IProviderListener mListener;

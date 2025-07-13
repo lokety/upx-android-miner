@@ -10,7 +10,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +20,9 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import io.uplexaproject.androidminer.api.ProviderManager;
+import com.uplexa.androidminer.api.ProviderManager;
 
-public class WizardSettingsActivity extends BaseActivity {
+public class WizardSettingsActivity extends com.uplexa.androidminer.BaseActivity {
     private SeekBar sbCores, sbCPUTemp, sbBatteryTemp, sbCooldown;
     private TextView tvCPUMaxTemp, tvBatteryMaxTemp, tvCooldown;
 
@@ -65,7 +65,7 @@ public class WizardSettingsActivity extends BaseActivity {
                 LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
                 View popupView = inflater.inflate(R.layout.helper_hardware_settings, null);
-                Utils.showPopup(v, inflater, popupView);
+                com.uplexa.androidminer.Utils.showPopup(v, inflater, popupView);
             }
         });
 
@@ -78,39 +78,39 @@ public class WizardSettingsActivity extends BaseActivity {
         sbCores.setMax(cores);
         tvCoresMax.setText(Integer.toString(cores));
 
-        if (Config.read("cores").equals("")) {
+        if (com.uplexa.androidminer.Config.read("cores").equals("")) {
             sbCores.setProgress(suggested);
             tvCoresNb.setText(Integer.toString(suggested));
         } else {
-            int corenb = Integer.parseInt(Config.read("cores"));
+            int corenb = Integer.parseInt(com.uplexa.androidminer.Config.read("cores"));
             sbCores.setProgress(corenb);
             tvCoresNb.setText(Integer.toString(corenb));
         }
 
         // CPU Temp
-        if (!Config.read("maxcputemp").equals("")) {
-            nMaxCPUTemp = Integer.parseInt(Config.read("maxcputemp"));
+        if (!com.uplexa.androidminer.Config.read("maxcputemp").equals("")) {
+            nMaxCPUTemp = Integer.parseInt(com.uplexa.androidminer.Config.read("maxcputemp"));
         }
 
-        int nProgress = ((nMaxCPUTemp - Utils.MIN_CPU_TEMP)/Utils.INCREMENT) + 1;
+        int nProgress = ((nMaxCPUTemp - com.uplexa.androidminer.Utils.MIN_CPU_TEMP)/ com.uplexa.androidminer.Utils.INCREMENT) + 1;
         sbCPUTemp.setProgress(nProgress);
         updateCPUTemp();
 
-        if (!Config.read("maxbatterytemp").equals("")) {
-            nMaxBatteryTemp = Integer.parseInt(Config.read("maxbatterytemp"));
+        if (!com.uplexa.androidminer.Config.read("maxbatterytemp").equals("")) {
+            nMaxBatteryTemp = Integer.parseInt(com.uplexa.androidminer.Config.read("maxbatterytemp"));
         }
 
         // Battery Temp
-        nProgress = ((nMaxBatteryTemp-Utils.MIN_BATTERY_TEMP)/Utils.INCREMENT)+1;
+        nProgress = ((nMaxBatteryTemp- com.uplexa.androidminer.Utils.MIN_BATTERY_TEMP)/ com.uplexa.androidminer.Utils.INCREMENT)+1;
         sbBatteryTemp.setProgress(nProgress);
         updateBatteryTemp();
 
-        if (!Config.read("cooldownthreshold").equals("")) {
-            nCooldownTheshold = Integer.parseInt(Config.read("cooldownthreshold"));
+        if (!com.uplexa.androidminer.Config.read("cooldownthreshold").equals("")) {
+            nCooldownTheshold = Integer.parseInt(com.uplexa.androidminer.Config.read("cooldownthreshold"));
         }
 
         // Cooldown
-        nProgress = ((nCooldownTheshold - Utils.MIN_COOLDOWN) / Utils.INCREMENT) + 1;
+        nProgress = ((nCooldownTheshold - com.uplexa.androidminer.Utils.MIN_COOLDOWN) / com.uplexa.androidminer.Utils.INCREMENT) + 1;
         sbCooldown.setProgress(nProgress);
         updateCooldownThreshold();
 
@@ -181,18 +181,26 @@ public class WizardSettingsActivity extends BaseActivity {
                 updateCooldownThreshold();
             }
         });
+
+        // Set click listener for saveSettings
+        findViewById(R.id.saveSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onStart(v); // Reuse existing method
+            }
+        });
     }
 
     private Integer getCPUTemp() {
-        return ((sbCPUTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_CPU_TEMP;
+        return ((sbCPUTemp.getProgress() - 1) * com.uplexa.androidminer.Utils.INCREMENT) + com.uplexa.androidminer.Utils.MIN_CPU_TEMP;
     }
 
     private Integer getBatteryTemp() {
-        return ((sbBatteryTemp.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_BATTERY_TEMP;
+        return ((sbBatteryTemp.getProgress() - 1) * com.uplexa.androidminer.Utils.INCREMENT) + com.uplexa.androidminer.Utils.MIN_BATTERY_TEMP;
     }
 
     private Integer getCooldownTheshold() {
-        return ((sbCooldown.getProgress() - 1) * Utils.INCREMENT) + Utils.MIN_COOLDOWN;
+        return ((sbCooldown.getProgress() - 1) * com.uplexa.androidminer.Utils.INCREMENT) + com.uplexa.androidminer.Utils.MIN_COOLDOWN;
     }
 
     private void updateCPUTemp(){
@@ -208,24 +216,24 @@ public class WizardSettingsActivity extends BaseActivity {
     }
 
     public void onStart(View view) {
-        Config.write("workername", Tools.getDeviceName());
+        com.uplexa.androidminer.Config.write("workername", com.uplexa.androidminer.Tools.getDeviceName());
 
-        Config.write("cores", Integer.toString(sbCores.getProgress()));
-        Config.write("maxcputemp", Integer.toString(getCPUTemp()));
-        Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
-        Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
+        com.uplexa.androidminer.Config.write("cores", Integer.toString(sbCores.getProgress()));
+        com.uplexa.androidminer.Config.write("maxcputemp", Integer.toString(getCPUTemp()));
+        com.uplexa.androidminer.Config.write("maxbatterytemp", Integer.toString(getBatteryTemp()));
+        com.uplexa.androidminer.Config.write("cooldownthreshold", Integer.toString(getCooldownTheshold()));
 
-        Config.write("threads", "1"); // Default value
-        Config.write("intensity", "1"); // Default value
+        com.uplexa.androidminer.Config.write("threads", "1"); // Default value
+        com.uplexa.androidminer.Config.write("intensity", "1"); // Default value
 
-        Config.write("disableamayc", "0");
+        com.uplexa.androidminer.Config.write("disableamayc", "0");
 
-        Config.write("init", "1");
+        com.uplexa.androidminer.Config.write("init", "1");
 
         ProviderManager.generate();
 
-        startActivity(new Intent(WizardSettingsActivity.this, MainActivity.class));
+        startActivity(new Intent(WizardSettingsActivity.this, com.uplexa.androidminer.MainActivity.class));
         finish();
-        Config.write("hide_setup_wizard", "1");
+        com.uplexa.androidminer.Config.write("hide_setup_wizard", "1");
     }
 }
