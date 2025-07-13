@@ -324,7 +324,6 @@
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
 			android:backgroundTint="@color/bg_green"
-			android:onClick="onStart"
 			android:text="@string/startmining"
 			android:textSize="14sp"
 			android:textAllCaps="false"

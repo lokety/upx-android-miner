@@ -10,12 +10,12 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
-import static io.uplexaproject.androidminer.MainActivity.contextOfApplication;
+import static com.uplexa.androidminer.MainActivity.contextOfApplication;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static int sessionDepth = 0;
@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             sessionDepth--;
         if (sessionDepth == 0) {
             // app went to background
-            if(MainActivity.isDeviceMiningBackground())
+            if(com.uplexa.androidminer.MainActivity.isDeviceMiningBackground())
                 Toast.makeText(contextOfApplication, getResources().getString(R.string.miningbackground), Toast.LENGTH_SHORT).show();
         }
     }

@@ -10,10 +10,10 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer.api;
+package com.uplexa.androidminer.api;
 
 import java.util.ArrayList;
-import io.uplexaproject.androidminer.Config;
+import com.uplexa.androidminer.Config;
 
 public final class ProviderManager {
 
@@ -79,7 +79,7 @@ public final class ProviderManager {
         request.start();
     }
 
-    static final public ProviderRequest request = new ProviderRequest();
+    static final public com.uplexa.androidminer.api.ProviderRequest request = new com.uplexa.androidminer.api.ProviderRequest();
 
     static public void generate() {
         request.stop();

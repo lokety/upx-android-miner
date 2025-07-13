@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Added -->
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus.on" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -28,14 +33,14 @@
             android:resource="@color/c_white" />
 
         <activity
-            android:name="io.uplexaproject.androidminer.MainActivity"
+            android:name="com.uplexa.androidminer.MainActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name="io.uplexaproject.androidminer.SplashActivity"
+            android:name="com.uplexa.androidminer.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -44,41 +49,41 @@
         </activity>
 
 	    <activity
-            android:name="io.uplexaproject.androidminer.QrCodeScannerActivity"
-            android:parentActivityName="io.uplexaproject.androidminer.MainActivity">
+            android:name="com.uplexa.androidminer.QrCodeScannerActivity"
+            android:parentActivityName="com.uplexa.androidminer.MainActivity">
         </activity>
 
         <activity
-            android:name="io.uplexaproject.androidminer.WizardHomeActivity"
-            android:parentActivityName="io.uplexaproject.androidminer.MainActivity">
+            android:name="com.uplexa.androidminer.WizardHomeActivity"
+            android:parentActivityName="com.uplexa.androidminer.MainActivity">
         </activity>
 
         <activity
-            android:name="io.uplexaproject.androidminer.WizardAddressActivity"
-            android:parentActivityName="io.uplexaproject.androidminer.MainActivity">
+            android:name="com.uplexa.androidminer.WizardAddressActivity"
+            android:parentActivityName="com.uplexa.androidminer.MainActivity">
         </activity>
 
         <activity
-            android:name="io.uplexaproject.androidminer.WizardPoolActivity"
-            android:parentActivityName="io.uplexaproject.androidminer.MainActivity">
+            android:name="com.uplexa.androidminer.WizardPoolActivity"
+            android:parentActivityName="com.uplexa.androidminer.MainActivity">
         </activity>
 
         <activity
-            android:name="io.uplexaproject.androidminer.WizardSettingsActivity"
-            android:parentActivityName="io.uplexaproject.androidminer.MainActivity">
+            android:name="com.uplexa.androidminer.WizardSettingsActivity"
+            android:parentActivityName="com.uplexa.androidminer.MainActivity">
         </activity>
 
         <activity
-            android:name="io.uplexaproject.androidminer.BaseActivity"
-            android:parentActivityName="io.uplexaproject.androidminer.MainActivity">
+            android:name="com.uplexa.androidminer.BaseActivity"
+            android:parentActivityName="com.uplexa.androidminer.MainActivity">
         </activity>
 
         <service
-            android:name="io.uplexaproject.androidminer.MiningService"
+            android:name="com.uplexa.androidminer.MiningService"
             android:enabled="true"/>
 
         <receiver
-            android:name="io.uplexaproject.androidminer.NotificationsReceiver"
+            android:name="com.uplexa.androidminer.NotificationsReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

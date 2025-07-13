@@ -10,7 +10,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 import java.text.DecimalFormat;
 
-public class WizardPoolActivity extends BaseActivity {
+public class WizardPoolActivity extends com.uplexa.androidminer.BaseActivity {
     private static final String LOG_TAG = "WizardPoolActivity";
 
     private int selectedPoolIndex = 1;
@@ -61,14 +61,14 @@ public class WizardPoolActivity extends BaseActivity {
                         tvMinersGNTL.setText(String.format("%s %s", objStats.getString("miners"), getResources().getString(R.string.miners)));
 
                         TextView tvHrGNTL = view.findViewById(R.id.hruPlexa);
-                        float fHrGNTL = Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
+                        float fHrGNTL = com.uplexa.androidminer.Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
                         tvHrGNTL.setText(String.format("%s kH/s", new DecimalFormat("##.#").format(fHrGNTL)));
 
                     } catch (Exception e) {
                         //Do nothing
                     }
                 }
-        , this::parseVolleyError);
+                , this::parseVolleyError);
 
         queue.add(stringRequest);
 
@@ -86,7 +86,7 @@ public class WizardPoolActivity extends BaseActivity {
                         tvMinersMR.setText(String.format("%s %s", objConfigPool.getString("miners"), getResources().getString(R.string.miners)));
 
                         TextView tvHrMR = view.findViewById(R.id.hrMR);
-                        float fHrMR = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
+                        float fHrMR = com.uplexa.androidminer.Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
                         tvHrMR.setText(String.format("%s kH/s", new DecimalFormat("##.#").format(fHrMR)));
 
                     } catch (Exception e) {
@@ -110,7 +110,7 @@ public class WizardPoolActivity extends BaseActivity {
                         tvMinersHM.setText(String.format("%s %s", objConfigPool.getString("miners"), getResources().getString(R.string.miners)));
 
                         TextView tvHrHM = view.findViewById(R.id.hrHM);
-                        float fHrHM = Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
+                        float fHrHM = com.uplexa.androidminer.Utils.convertStringToFloat(objConfigPool.getString("hashrate")) / 1000.0f;
                         tvHrHM.setText(String.format("%s kH/s", new DecimalFormat("##.#").format(fHrHM)));
 
                     } catch (Exception e) {
@@ -134,7 +134,7 @@ public class WizardPoolActivity extends BaseActivity {
                         tvMinersGNTL.setText(String.format("%s %s", objStats.getString("miners"), getResources().getString(R.string.miners)));
 
                         TextView tvHrGNTL = view.findViewById(R.id.hrGNTL);
-                        float fHrGNTL = Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
+                        float fHrGNTL = com.uplexa.androidminer.Utils.convertStringToFloat(objStats.getString("hashRate")) / 1000.0f;
                         tvHrGNTL.setText(String.format("%s kH/s", new DecimalFormat("##.#").format(fHrGNTL)));
 
                     } catch (Exception e) {
@@ -144,6 +144,58 @@ public class WizardPoolActivity extends BaseActivity {
                 , this::parseVolleyError);
 
         queue.add(stringRequest);
+
+        // Set click listener for lluPlexa
+        LinearLayout lluPlexa = findViewById(R.id.lluPlexa);
+        if (lluPlexa != null) {
+            lluPlexa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickuPlexa(v); // Reuse existing method
+                }
+            });
+        }
+
+        // Set click listener for llMR
+        LinearLayout llMR = findViewById(R.id.llMR);
+        if (llMR != null) {
+            llMR.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickMR(v); // Reuse existing method
+                }
+            });
+        }
+
+        // Set click listener for llHM
+        LinearLayout llHM = findViewById(R.id.llHM);
+        if (llHM != null) {
+            llHM.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickHM(v); // Reuse existing method
+                }
+            });
+        }
+
+        // Set click listener for llGNTL
+        LinearLayout llGNTL = findViewById(R.id.llGNTL);
+        if (llGNTL != null) {
+            llGNTL.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickGNTL(v); // Reuse existing method
+                }
+            });
+        }
+
+        // Set click listener for btnNext
+        findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNext(v); // Reuse existing method
+            }
+        });
     }
 
     private void parseVolleyError(VolleyError error) {
@@ -303,9 +355,9 @@ public class WizardPoolActivity extends BaseActivity {
     }
 
     public void onNext(View view) {
-        Config.write("selected_pool", Integer.toString(selectedPoolIndex));
+        com.uplexa.androidminer.Config.write("selected_pool", Integer.toString(selectedPoolIndex));
 
-        startActivity(new Intent(WizardPoolActivity.this, WizardSettingsActivity.class));
+        startActivity(new Intent(WizardPoolActivity.this, com.uplexa.androidminer.WizardSettingsActivity.class));
         finish();
     }
 }

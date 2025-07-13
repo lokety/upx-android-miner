@@ -11,7 +11,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -47,8 +47,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
-import io.uplexaproject.androidminer.api.PoolItem;
-import io.uplexaproject.androidminer.api.ProviderManager;
+import com.uplexa.androidminer.api.PoolItem;
+import com.uplexa.androidminer.api.ProviderManager;
 
 public class SettingsFragment extends Fragment {
 

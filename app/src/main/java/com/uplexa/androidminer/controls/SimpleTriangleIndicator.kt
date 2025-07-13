@@ -14,7 +14,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer.controls;
+package com.uplexa.androidminer.controls;
 
 import android.content.Context
 import android.graphics.*

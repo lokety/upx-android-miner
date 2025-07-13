@@ -10,7 +10,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -30,7 +30,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class WizardAddressActivity extends BaseActivity {
+public class WizardAddressActivity extends com.uplexa.androidminer.BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,13 +42,43 @@ public class WizardAddressActivity extends BaseActivity {
         }
 
         setContentView(R.layout.fragment_wizard_address);
+
+        // Set click listener for btnMineuPlexa
+        Button btnMineuPlexa = findViewById(R.id.btnMineuPlexa);
+        if (btnMineuPlexa != null) {
+            btnMineuPlexa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onMineuPlexa(v); // Reuse existing method
+                }
+            });
+        }
+
+        // Set click listener for btnPaste
+        Button btnPaste = findViewById(R.id.btnPaste);
+        if (btnPaste != null) {
+            btnPaste.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onPaste(v); // Reuse existing method
+                }
+            });
+        }
+
+        // Set click listener for saveSettings
+        findViewById(R.id.saveSettings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNext(v); // Reuse existing method
+            }
+        });
     }
 
     public void onPaste(View view) {
         View view2 = findViewById(android.R.id.content).getRootView();
 
         TextInputEditText etAddress = view2.findViewById(R.id.addressWizard);
-        etAddress.setText(Utils.pasteFromClipboard(WizardAddressActivity.this));
+        etAddress.setText(com.uplexa.androidminer.Utils.pasteFromClipboard(WizardAddressActivity.this));
     }
 
     public void onScanQrCode(View view) {
@@ -73,11 +103,11 @@ public class WizardAddressActivity extends BaseActivity {
         Context appContext = WizardAddressActivity.this;
 
         try {
-            Intent intent = new Intent(appContext, QrCodeScannerActivity.class);
+            Intent intent = new Intent(appContext, com.uplexa.androidminer.QrCodeScannerActivity.class);
             startActivity(intent);
 
             TextView tvAddress = view2.findViewById(R.id.address);
-            tvAddress.setText(Config.read("address"));
+            tvAddress.setText(com.uplexa.androidminer.Config.read("address"));
         } catch (Exception e) {
             Toast.makeText(appContext, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -85,6 +115,7 @@ public class WizardAddressActivity extends BaseActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);  // Added call to superclass
         Context appContext = WizardAddressActivity.this;
 
         if (requestCode == 100) {
@@ -92,7 +123,7 @@ public class WizardAddressActivity extends BaseActivity {
                 startQrCodeActivity();
             }
             else {
-                Toast.makeText(appContext,"Camera Permission Denied.", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, "Camera Permission Denied.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -105,7 +136,7 @@ public class WizardAddressActivity extends BaseActivity {
 
         TextInputLayout til = view2.findViewById(R.id.addressIL);
 
-        if(strAddress.isEmpty() || !Utils.verifyAddress(strAddress)) {
+        if(strAddress.isEmpty() || !com.uplexa.androidminer.Utils.verifyAddress(strAddress)) {
             til.setErrorEnabled(true);
             til.setError(getResources().getString(R.string.invalidaddress));
             requestFocus(tvAddress);
@@ -115,9 +146,9 @@ public class WizardAddressActivity extends BaseActivity {
         til.setErrorEnabled(false);
         til.setError(null);
 
-        Config.write("address", strAddress);
+        com.uplexa.androidminer.Config.write("address", strAddress);
 
-        startActivity(new Intent(WizardAddressActivity.this, WizardPoolActivity.class));
+        startActivity(new Intent(WizardAddressActivity.this, com.uplexa.androidminer.WizardPoolActivity.class));
         finish();
     }
 
@@ -138,7 +169,7 @@ public class WizardAddressActivity extends BaseActivity {
             public void onClick(View v) {
                 View view2 = findViewById(android.R.id.content).getRootView();
                 TextView tvAddress = view2.findViewById(R.id.addressWizard);
-                tvAddress.setText(Utils.UPLEXA_UPX_ADDRESS);
+                tvAddress.setText(com.uplexa.androidminer.Utils.UPLEXA_UPX_ADDRESS);
 
                 dialog.dismiss();
             }

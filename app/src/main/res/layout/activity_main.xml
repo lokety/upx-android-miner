@@ -806,7 +806,6 @@
                 android:layout_height="24dp"
                 android:layout_gravity="bottom"
                 android:clickable="true"
-                android:onClick="onShowCores"
                 app:srcCompat="@drawable/ic_hrcores"
                 android:focusable="true" />
 

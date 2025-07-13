@@ -10,7 +10,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class WizardHomeActivity extends BaseActivity {
+public class WizardHomeActivity extends com.uplexa.androidminer.BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +67,32 @@ public class WizardHomeActivity extends BaseActivity {
         tvDisclaimer.setMovementMethod(LinkMovementMethod.getInstance());
         tvDisclaimer.setLinkTextColor(getResources().getColor(R.color.c_blue));
         tvDisclaimer.setHighlightColor(Color.TRANSPARENT);
+
+        // Set click listener for enterWalletAddress
+        Button btnEnterAddress = findViewById(R.id.enterWalletAddress);
+        if (btnEnterAddress != null) {
+            btnEnterAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onEnterAddress(v); // Reuse existing method
+                }
+            });
+        }
+
+        // Set click listener for createWalletAddress
+        Button btnCreateWallet = findViewById(R.id.createWalletAddress);
+        if (btnCreateWallet != null) {
+            btnCreateWallet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCreateWallet(v); // Reuse existing method
+                }
+            });
+        }
     }
 
     public void onEnterAddress(View view) {
-        startActivity(new Intent(WizardHomeActivity.this, WizardAddressActivity.class));
+        startActivity(new Intent(WizardHomeActivity.this, com.uplexa.androidminer.WizardAddressActivity.class));
         finish();
     }
 
@@ -81,10 +103,10 @@ public class WizardHomeActivity extends BaseActivity {
     }
 
     public void onSkip(View view) {
-        startActivity(new Intent(WizardHomeActivity.this, MainActivity.class));
+        startActivity(new Intent(WizardHomeActivity.this, com.uplexa.androidminer.MainActivity.class));
         finish();
 
-        Config.write("hide_setup_wizard", "1");
+        com.uplexa.androidminer.Config.write("hide_setup_wizard", "1");
     }
 
     private void showDisclaimer() {
@@ -98,7 +120,7 @@ public class WizardHomeActivity extends BaseActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Config.write("disclaimer_agreed", "1");
+                com.uplexa.androidminer.Config.write("disclaimer_agreed", "1");
                 dialog.dismiss();
             }
         });

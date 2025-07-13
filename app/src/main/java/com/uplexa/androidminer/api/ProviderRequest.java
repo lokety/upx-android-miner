@@ -10,12 +10,12 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer.api;
+package com.uplexa.androidminer.api;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.uplexaproject.androidminer.Config;
+import com.uplexa.androidminer.Config;
 
 public class ProviderRequest{
 

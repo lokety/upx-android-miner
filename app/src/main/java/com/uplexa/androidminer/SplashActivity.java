@@ -10,7 +10,7 @@
 // get one working for them) Their new UI is shiny, and thus, some of their code has
 // been used.
 
-package io.uplexaproject.androidminer;
+package com.uplexa.androidminer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -48,7 +48,7 @@ public class SplashActivity extends Activity {
                 //startActivity(new Intent(SplashActivity.this, WizardHomeActivity.class));
 
                 if (hide_setup_wizard.equals("")) {
-                    startActivity(new Intent(SplashActivity.this, WizardHomeActivity.class));
+                    startActivity(new Intent(SplashActivity.this, com.uplexa.androidminer.WizardHomeActivity.class));
                 } else {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 }
